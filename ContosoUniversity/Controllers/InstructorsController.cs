@@ -162,28 +162,56 @@ namespace ContosoUniversity.Controllers
                     .ThenInclude(i => i.Course)
                 .FirstOrDefaultAsync(m => m.ID == id);
 
-            if (await TryUpdateModelAsync<Instructor>(
-                instructorToUpdate,
-                "",
-                i => i.FirstMidName, i => i.LastName, i => i.HireDate, i => i.OfficeAssignment))
+            try
             {
-                if (String.IsNullOrWhiteSpace(instructorToUpdate.OfficeAssignment?.Location))
+                if (await TryUpdateModelAsync<Instructor>(
+                    instructorToUpdate,
+                    "",
+                    i => i.FirstMidName, i => i.LastName, i => i.HireDate, i => i.OfficeAssignment))
                 {
-                    instructorToUpdate.OfficeAssignment = null;
+                    if (String.IsNullOrWhiteSpace(instructorToUpdate.OfficeAssignment?.Location))
+                    {
+                        instructorToUpdate.OfficeAssignment = null;
+                    }
+                    UpdateInstructorCourses(selectedCourses, instructorToUpdate);
+                    try
+                    {
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateException /* ex */)
+                    {
+                        //Log the error (uncomment ex variable name and write a log.)
+                        ModelState.AddModelError("", "Unable to save changes. " +
+                            "Try again, and if the problem persists, " +
+                            "see your system administrator.");
+                    }
+                    return RedirectToAction(nameof(Index));
                 }
-                UpdateInstructorCourses(selectedCourses, instructorToUpdate);
-                try
+                else
                 {
-                    await _context.SaveChangesAsync();
+                    _context.Update(instructorToUpdate);
+                    if (String.IsNullOrWhiteSpace(instructorToUpdate.OfficeAssignment?.Location))
+                    {
+                        instructorToUpdate.OfficeAssignment = null;
+                    }
+                    UpdateInstructorCourses(selectedCourses, instructorToUpdate);
+                    try
+                    {
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateException /* ex */)
+                    {
+                        //Log the error (uncomment ex variable name and write a log.)
+                        ModelState.AddModelError("", "Unable to save changes. " +
+                            "Try again, and if the problem persists, " +
+                            "see your system administrator.");
+                    }
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateException /* ex */)
-                {
-                    //Log the error (uncomment ex variable name and write a log.)
-                    ModelState.AddModelError("", "Unable to save changes. " +
-                        "Try again, and if the problem persists, " +
-                        "see your system administrator.");
-                }
-                return RedirectToAction(nameof(Index));
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Error: {e}", e.Message);
             }
             UpdateInstructorCourses(selectedCourses, instructorToUpdate);
             PopulateAssignedCourseData(instructorToUpdate);
