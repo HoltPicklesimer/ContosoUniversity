@@ -52,8 +52,8 @@ namespace ContosoUniversity.Controllers
                 {
                     string query = "SELECT EnrollmentDate, COUNT(*) AS StudentCount "
                         + "FROM Person "
-                        + "WHERE Discriminator = 'Student' "
-                        + "GROUP BY EnrollmentDate";
+                        + "JOIN Student ON Person.ID = Student.ID "
+                        + "GROUP BY Student.EnrollmentDate";
                     command.CommandText = query;
                     DbDataReader reader = await command.ExecuteReaderAsync();
 
@@ -67,6 +67,10 @@ namespace ContosoUniversity.Controllers
                     }
                     reader.Dispose();
                 }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Error: {e}, Stack Trace: {s}", e.Message, e.StackTrace);
             }
             finally
             {

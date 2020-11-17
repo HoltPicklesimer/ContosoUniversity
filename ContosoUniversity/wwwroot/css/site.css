@@ -69,3 +69,39 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+/* Custom Styles */
+.university-img {
+    height: 400px;
+    background-image: url(https://images.pexels.com/photos/137618/pexels-photo-137618.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+    background-size: cover;
+    background-position: top;
+    color: #A63446;
+}
+
+* {
+    font-family: 'Goudy Bookletter 1911', serif;
+}
+
+header, .footer {
+    background-color: #0C6291;
+    color: white;
+}
+
+body {
+    background-color: #FBFEF9;
+    color: #000004;
+}
+
+a {
+    color: #A63446;
+}
+
+a:hover {
+    color: #7E1946;
+}
+
+.btn-default {
+    background-color: #0C6291;
+    color: #FBFEF9;
+}

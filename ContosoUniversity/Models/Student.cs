@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ContosoUniversity.Models
 {
+    [NotMapped]
     public class Student : Person
     {
         [DataType(DataType.Date)]

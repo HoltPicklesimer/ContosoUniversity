@@ -1,12 +1,12 @@
 ﻿@model ContosoUniversity.Models.Student
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Disenroll a Student";
 }
 
-<h1>Delete</h1>
+<h1>Disenroll a Student</h1>
 <p class="text-danger">@ViewData["ErrorMessage"]</p>
-<h3>Are you sure you want to delete this?</h3>
+<h3>Are you sure you want to disenroll this student?</h3>
 <div>
     <h4>Student</h4>
     <hr />
@@ -33,7 +33,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="ID" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <input type="submit" value="Disenroll" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>
 </div>
